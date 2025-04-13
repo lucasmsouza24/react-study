@@ -277,3 +277,106 @@ return <section>
 Sempre que uma lista de elementos é renderizada, o React exige uma prop `key` única para cada item.
 
 > Usar o indice de um array como `key` até funciona, mas não é recomendado pelo React (e com certeza vai gerar Warnings no seu console). O ideal é que o valor de `key` seja um valor único, como um ID vindo do banco de dados ou um `uuid`.
+
+### useEffect
+
+O useEffect é um dos hooks mais importantes do React. Ele é utilizado para lidar com efeitos colaterais ("side effects") dentro dos componentes.
+
+#### O que são efeitos colaterais?
+
+São ações que acontecem fora do fluxo normal de renderização do componente, como por exemplo:
+
+- Buscar dados de uma API
+- Atualizar o document.title
+- Manipular timers (como setTimeout ou setInterval)
+- Registrar ou remover event listeners
+
+### Forma básica de uso
+
+~~~jsx
+import { useEffect } from "react"
+
+export default function LearnUseEffect() {
+    useEffect(() => {
+        console.log("Esse código roda toda vez que o componente renderiza.");
+    });
+
+    return <h1>Testando useEffect</h1>
+}
+~~~
+
+Nesse exemplo:
+
+Toda vez que o componente for renderizado, a função dentro do useEffect será executada.
+
+#### Executando o efeito SOMENTE quando certas variáveis mudarem
+
+Você pode passar um segundo argumento para o useEffect: um array de dependências.
+
+~~~jsx
+import { useEffect, useState } from "react"
+
+export default function LearnUseEffectDep() {
+    const [textLength, setTextLength] = useState(0);
+    const [text, setText] = useState('');
+
+    useEffect(() => {
+        setTextLength(text.length);
+    }, [text]);
+
+    return <section>
+        <h1>Testando useEffect</h1>
+        <textarea placeholder="Escreva aqui" onChange={(evt) => setText(evt.target.value)}></textarea>
+        <p>Quantidade de characteres: {textLength}</p>
+    </section>
+}
+~~~
+
+Esse useEffect só roda quando a variável `text` mudar.
+
+> Isso é ótimo para otimizar performance e evitar efeitos desnecessários.
+
+#### Cleanup (limpeza de efeitos)
+
+Em alguns casos, é necessário limpar um efeito antes que ele seja reexecutado ou antes que o componente seja desmontado.
+
+Isso acontece principalmente quando usamos efeitos que ficam ativos, como:
+
+- `setInterval` / `setTimeout`
+- Listeners de eventos (ex: `window.addEventListener`)
+- WebSockets, etc.
+
+~~~jsx
+import { useEffect, useState } from "react";
+
+export default function LearnUseEffectInterval() {
+    const [actualDate, setActualDate] = useState(new Date());
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setActualDate(new Date());
+        }, 1000);
+
+        // Cleanup: limpa o intervalo quando o componente for desmontado
+        return () => {
+            clearInterval(interval);
+            console.log("Intervalo limpo!");
+        }
+    }, []); // roda só uma vez (quando o componente monta)
+
+    return <h1>Data atual: {actualDate.toLocaleString()}</h1>
+}
+~~~
+
+A função cleanup é chamada nas seguintes circunstâncias:
+
+- Quando o componente é desmontado (sai da tela)
+- Quando o efeito é reexecutado (por conta de mudança nas dependências)
+
+#### 👉 Quando usar o cleanup?
+
+Sempre que você iniciar algo que continua rodando ou ouvindo mesmo após a renderização.
+
+Exemplos: timers, listeners, conexões com APIs em tempo real.
+
+> O cleanup evita vazamento de memória, comportamentos estranhos e código executando mesmo com o componente fora da tela.
