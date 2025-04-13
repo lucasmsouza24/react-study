@@ -381,7 +381,7 @@ Exemplos: timers, listeners, conexões com APIs em tempo real.
 
 > O cleanup evita vazamento de memória, comportamentos estranhos e código executando mesmo com o componente fora da tela.
 
-#### useContext
+### useContext
 
 O `useContext` é um Hook do React que permite **compartilhar dados entre componentes** sem a necessidade de "passar as props manualmente" por várias camadas da aplicação.
 
