@@ -1,7 +1,7 @@
-import LearnUseEffectDep from "./topics/02-hooks/01-useEffect/LearnUseEffectDep"
+import ThemeProviderApp from "./topics/02-hooks/02-useContext/ThemeProviderApp"
 
 function App() {
-  return <LearnUseEffectDep />
+  return <ThemeProviderApp />
 }
 
 export default App
