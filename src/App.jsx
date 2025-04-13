@@ -1,7 +1,7 @@
-import ListaDeCompras from "./topics/01-fundamentos/07-lists-map/ListaDeCompras"
+import LearnUseEffectDep from "./topics/02-hooks/01-useEffect/LearnUseEffectDep"
 
 function App() {
-  return <ListaDeCompras />
+  return <LearnUseEffectDep />
 }
 
 export default App
