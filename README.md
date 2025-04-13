@@ -380,3 +380,97 @@ Sempre que você iniciar algo que continua rodando ou ouvindo mesmo após a rend
 Exemplos: timers, listeners, conexões com APIs em tempo real.
 
 > O cleanup evita vazamento de memória, comportamentos estranhos e código executando mesmo com o componente fora da tela.
+
+#### useContext
+
+O `useContext` é um Hook do React que permite **compartilhar dados entre componentes** sem a necessidade de "passar as props manualmente" por várias camadas da aplicação.
+
+É muito útil, por exemplo, para compartilhar informações **globais**, como:
+
+- Tema
+- Usuário autenticado
+- Idioma da aplicação
+- Carrinho de compras
+
+---
+
+#### Como funciona?
+
+No React, o `useContext` depende de três passos principais:
+
+1. **Criar o contexto** com `createContext`.
+2. **Fornecer o valor** com `Provider`.
+3. **Consumir esse valor** com `useContext`.
+
+---
+
+#### Exemplo prático: ThemeContext
+
+1. Criando o contexto e o Provider
+
+~~~tsx
+// src/contexts/ThemeContext.jsx
+
+import { createContext, useState } from "react";
+
+export const ThemeContext = createContext();
+
+export function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState("light");
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+  };
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+~~~
+
+2. Usando o Provider no topo da aplicação
+
+~~~tsx
+// src/App.jsx
+
+import { ThemeProvider } from "./contexts/ThemeContext";
+import ThemeToggler from "./components/ThemeToggler";
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <h1>Minha aplicação</h1>
+      <ThemeToggler />
+    </ThemeProvider>
+  );
+}
+~~~
+
+3.  Consumindo o contexto com useContext
+
+~~~tsx
+// src/components/ThemeToggler.jsx
+
+import { useContext } from "react";
+import { ThemeContext } from "../contexts/ThemeContext";
+
+export default function ThemeToggler() {
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
+  return (
+    <div>
+      <p>Tema atual: {theme}</p>
+      <button onClick={toggleTheme}>Alternar tema</button>
+    </div>
+  );
+}
+~~~
+
+#### Quando usar o useContext?
+
+- Quando é necessário compartilhar dados entre vários componentes, sem passar props manualmente.
+- Quando o dado precisa estar disponível em vários níveis da árvore de componentes.
+
+> ⚠️ O useContext não é uma solução para tudo. Ele deve ser usado com cuidado para evitar acoplamentos desnecessários. Se o estado for utilizado apenas por componentes próximos, continue usando props normalmente.
