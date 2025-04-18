@@ -808,3 +808,70 @@ export default function MyComponent() {
 ~~~
 
 > 📦 O `styles` é um objeto. Se quiser, pode usar `console.log(styles)` pra ver como as classes são convertidas em nomes únicos (ex: `texto_abc123`).
+
+### Styled Components / Emotion
+
+**Styled Components** e **Emotion** são bibliotecas que permitem escrever estilos diretamente dentro dos seus arquivos JavaScript/JSX.
+
+Isso significa que você pode estilizar seus componentes React sem sair do JS, com diversas vantagens:
+
+- Estilos com escopo local automaticamente.
+- Estilização baseada em props e lógica JavaScript.
+- Sem conflitos de nome de classe.
+- Suporte nativo a temas.
+
+#### Instalação
+
+Styled Components:
+
+~~~bash
+npm install styled-components
+~~~
+
+Emotion:
+
+~~~bash
+npm install @emotion/react @emotion/styled
+~~~
+
+#### Exemplos
+
+Styled Components:
+
+~~~jsx
+import styled from 'styled-components';
+
+const Titulo = styled.h1`
+  color: palevioletred;
+  font-size: 2rem;
+`;
+
+export default function AppStyled() {
+  return <Titulo>Hello Styled Components!</Titulo>;
+}
+~~~
+
+Emotion:
+
+~~~jsx
+/** @jsxImportSource @emotion/react */
+import styled from '@emotion/styled';
+
+const Titulo = styled.h1`
+  color: royalblue;
+  font-size: 2rem;
+`;
+
+export default function AppEmotion() {
+  return <Titulo>Hello Emotion!</Titulo>;
+}
+~~~
+
+#### Quando usar?
+
+Essas bibliotecas são ótimas quando:
+
+- Você quer acoplar estilos aos componentes (estilo + lógica no mesmo lugar).
+- Precisa de estilos dinâmicos baseados em props ou estados.
+- Quer evitar conflitos de nomes de classes.
+- Está criando um Design System ou biblioteca de componentes reutilizáveis.
