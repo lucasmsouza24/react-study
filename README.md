@@ -549,3 +549,57 @@ export default function PreviousValueTracker() {
 - Pode ser usado no lugar de variáveis globais ou valores externos, com a vantagem de estar atrelado ao ciclo de vida do React.
 
 - Pode substituir `document.querySelector` ou `getElementById` na manipulação de DOM.
+
+### useMemo
+
+O `useMemo` é um hook que serve para **memorizar valores calculados**. Ou seja, ele evita que uma função seja recalculada sempre que o componente renderiza, **a menos que alguma das dependências informadas tenha mudado**.
+
+Esse hook é útil principalmente quando temos **funções pesadas ou cálculos complexos** que não devem ser reexecutados à toa, para evitar perda de performance.
+
+Exemplo de uso:
+
+~~~jsx
+export default function LearnUseMemo() {
+    const [number, setNumber] = useState(0);
+    const [darkMode, setDarkMode] = useState(false);
+
+    const double = useMemo(() => {
+        console.log('Calculando...')
+        return number * 2;
+    }, [number])
+
+    const themeStyle = {
+        backgroundColor: darkMode ? '#333' : '#fff',
+        color: darkMode ? '#fff' : '#000',
+        padding: '1rem',
+        marginTop: '1rem',
+        borderRadius: '8px'
+    };
+
+    return (
+        <div>
+            <input type="number" value={number} onChange={e => setNumber(Number(e.target.value))} />
+            <button onClick={() => setDarkMode(!darkMode)}>Toggle Theme</button>
+            <div style={themeStyle}>
+                <p>Resultado: {double}</p>
+            </div>
+        </div>
+    );
+}
+~~~
+> Repare que o cálculo de `double` só será executado novamente quando `number` mudar. Isso evita o log "Calculando..." em renderizações causadas por mudanças no `darkMode`, por exemplo.
+
+#### Diferença entre `useMemo` e `useEffect`
+
+É comum que iniciantes usem `useEffect` para tudo — inclusive para lidar com valores derivados de estados. No entanto, **há uma diferença importante entre os dois**:
+
+| Hook        | Quando usar                                          | Retorna           | Exemplo de uso                          |
+|-------------|------------------------------------------------------|-------------------|-----------------------------------------|
+| `useEffect` | Para **executar efeitos colaterais** (ex: API, Timer) | `undefined`       | Fazer um `fetch`, usar `setInterval`    |
+| `useMemo`   | Para **memorizar valores calculados**                | valor memorizado  | Evitar recálculo de um valor derivado   |
+
+
+Ou seja:
+
+- `useEffect` é usado para executar algo com base em mudanças (efeitos colaterais).
+- `useMemo` é usado para calcular um valor e salvá-lo em memória, evitando recálculo desnecessário.
