@@ -1,7 +1,7 @@
-import MyComponent from "./topics/03-estilizacao/03-css-modules/MyComponent"
+import AppEmotion from './topics/03-estilizacao/04-styled-component-emotion/emotion/AppEmotion'
 
 function App() {
-  return <MyComponent />
+  return <AppEmotion />
 }
 
 export default App
