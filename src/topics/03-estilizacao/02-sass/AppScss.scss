@@ -1,0 +1,11 @@
+// AppScss.scss
+$text-color: purple;
+
+.text {
+    color: $text-color;
+    font-size: 40px;
+    font-weight: bold;
+    &:hover {
+        text-decoration: underline;
+    }
+}
