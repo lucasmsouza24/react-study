@@ -605,3 +605,102 @@ Ou seja:
 
 - `useEffect` é usado para executar algo com base em mudanças (efeitos colaterais).
 - `useMemo` é usado para calcular um valor e salvá-lo em memória, evitando recálculo desnecessário.
+
+
+### useCallback
+
+O `useCallback` é um hook do React que memoriza funções, evitando que elas sejam recriadas em toda renderização.
+
+Em React, **funções declaradas dentro de componentes são recriadas sempre que o componente renderiza**. Isso pode causar problemas de performance ou até efeitos colaterais indesejados, especialmente quando:
+
+- A função é passada como prop para outro componente;
+- O componente filho depende dessa função dentro de um `useEffect`;
+- O componente filho está otimizado com `React.memo`.
+
+#### Exemplo
+
+Imagine que temos um input para buscar frutas, e um componente filho que mostra os itens filtrados. A função que filtra os itens é passada como prop para o filho.
+
+Se não usarmos `useCallback`, essa função será recriada a cada digitação, fazendo o componente filho renderizar novamente à toa.
+
+~~~jsx
+// App.jsx
+import { useState, useCallback } from "react";
+import ListaFiltrada from "./ListaFiltrada";
+
+const itens = [
+  "Banana",
+  "Maçã",
+  "Laranja",
+  "Abacaxi",
+  "Uva",
+  "Pêssego"
+];
+
+export default function App() {
+  const [search, setSearch] = useState("");
+
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  // Função de filtro memorizada
+  const filtrarItens = useCallback(() => {
+    return itens.filter((item) =>
+      item.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [search]);
+
+  return (
+    <div>
+      <h1>Busca de frutas</h1>
+      <input
+        type="text"
+        placeholder="Buscar..."
+        value={search}
+        onChange={handleSearchChange}
+      />
+      <ListaFiltrada getItens={filtrarItens} />
+    </div>
+  );
+}
+~~~
+
+~~~jsx
+// ListaFiltrada.jsx
+import { useEffect, useState } from "react";
+import React from "react";
+
+function ListaFiltrada({ getItens }) {
+  const [itensFiltrados, setItensFiltrados] = useState([]);
+
+  useEffect(() => {
+    const resultado = getItens();
+    setItensFiltrados(resultado);
+  }, [getItens]);
+
+  console.log("Renderizou ListaFiltrada");
+
+  return (
+    <ul>
+      {itensFiltrados.map((item, index) => (
+        <li key={index}>{item}</li>
+      ))}
+    </ul>
+  );
+}
+
+export default React.memo(ListaFiltrada);
+~~~
+
+#### 🤯 Sem useCallback…
+A função getItens seria recriada em toda digitação, o que:
+
+- Faz o `useEffect` do filho rodar toda hora;
+- Faz o `ListaFiltrada` renderizar novamente mesmo sem necessidade;
+- Em apps maiores, isso vira um problema de performance.
+
+#### ✅ Com useCallback…
+- A função `getItens` só muda se search mudar.
+- O React sabe que não precisa reprocessar a lista se `search` não mudou.
+- O `ListaFiltrada` fica mais leve e otimizado.
