@@ -1,7 +1,7 @@
-import AppUseCallback from "./topics/02-hooks/05-useCallback/AppUseCallback"
+import MyComponent from "./topics/03-estilizacao/03-css-modules/MyComponent"
 
 function App() {
-  return <AppUseCallback />
+  return <MyComponent />
 }
 
 export default App
