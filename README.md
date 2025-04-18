@@ -771,3 +771,40 @@ $text-color: purple;
     }
 }
 ~~~
+
+### CSS Modules
+
+CSS Modules são arquivos `.css` (ou `.scss`) que funcionam como módulos, ou seja: quando você importa, cada classe vira uma **propriedade de um objeto** — isso garante que o estilo será local ao componente e não global.
+
+> 🔒 A principal vantagem é **evitar conflitos de nome de classe**, especialmente em projetos grandes.
+
+📁 Estrutura de arquivos
+
+~~~css
+src/
+├── components/
+│   └── MeuComponente.jsx
+│   └── MeuComponente.module.css
+~~~
+
+Componente com CSS Module:
+
+~~~jsx
+// MyComponent.jsx
+
+import styles from './MyComponent.module.css';
+
+export default function MyComponent() {
+    return <p className={styles.text}>Hello CSS modules!</p>
+}
+~~~
+
+~~~css
+/* MyComponent.module.css */
+.texto {
+  color: green;
+  font-weight: bold;
+}
+~~~
+
+> 📦 O `styles` é um objeto. Se quiser, pode usar `console.log(styles)` pra ver como as classes são convertidas em nomes únicos (ex: `texto_abc123`).
