@@ -1,7 +1,7 @@
-import PreviousValueTracker from "./topics/02-hooks/03-useRef/PreviousValueTracker"
+import LearnUseMemo from "./topics/02-hooks/04-useMemo/LearnUseMemo"
 
 function App() {
-  return <PreviousValueTracker />
+  return <LearnUseMemo />
 }
 
 export default App
