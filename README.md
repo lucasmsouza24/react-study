@@ -474,3 +474,78 @@ export default function ThemeToggler() {
 - Quando o dado precisa estar disponível em vários níveis da árvore de componentes.
 
 > ⚠️ O useContext não é uma solução para tudo. Ele deve ser usado com cuidado para evitar acoplamentos desnecessários. Se o estado for utilizado apenas por componentes próximos, continue usando props normalmente.
+
+### useRef
+
+O `useRef` é um Hook nativo do React que pode ser usado em duas situações bem comuns:
+
+1. Referenciar diretamente elementos da DOM (por exemplo, dar foco em um input).
+2. Armazenar valores entre renderizações sem causar re-render.
+
+Ao declarar:
+
+~~~jsx
+const myRef = useRef(initialValue);
+~~~
+
+é criado um objeto com a estrutura:
+
+~~~jsx
+{ current: valorInicial }
+~~~
+
+Esse objeto é persistente entre renderizações. Ou seja: o React não apaga nem reinicia o valor entre os re-renders.
+
+> Importante: Mudar o valor de minhaRef.current NÃO causa uma nova renderização, diferente do useState.
+
+#### Exemplos práticos
+
+1. Focar automaticamente em um input.
+
+~~~jsx
+import { useRef, useEffect } from "react";
+
+export default function AutoFocusInput() {
+  const inputRef = useRef();
+
+  useEffect(() => {
+    inputRef.current.focus(); // foca no input ao montar o componente
+  }, []);
+
+  return <input ref={inputRef} placeholder="Digite algo..." />;
+}
+~~~
+> Usado quando você quer manipular diretamente um elemento HTML (DOM) — nesse caso, dar foco automático ao input.
+
+2. Armazenar valores entre renderizações.
+
+~~~jsx
+import { useEffect, useRef, useState } from "react";
+
+export default function PreviousValueTracker() {
+  const [count, setCount] = useState(0);
+  const prevCount = useRef();
+
+  useEffect(() => {
+    prevCount.current = count;
+  }, [count]);
+
+  return (
+    <div>
+      <p>Valor atual: {count}</p>
+      <p>Valor anterior: {prevCount.current}</p>
+      <button onClick={() => setCount(count + 1)}>Incrementar</button>
+    </div>
+  );
+}
+~~~
+
+> Aqui, usamos useRef para armazenar o valor anterior do contador. Como a alteração de ref.current não causa re-render, é ideal para esse tipo de situação.
+
+#### ⚠️ Dicas Importantes
+
+- `useRef` não dispara re-render: perfeito para armazenar dados internos do componente.
+
+- Pode ser usado no lugar de variáveis globais ou valores externos, com a vantagem de estar atrelado ao ciclo de vida do React.
+
+- Pode substituir `document.querySelector` ou `getElementById` na manipulação de DOM.
