@@ -278,6 +278,8 @@ Sempre que uma lista de elementos é renderizada, o React exige uma prop `key` �
 
 > Usar o indice de um array como `key` até funciona, mas não é recomendado pelo React (e com certeza vai gerar Warnings no seu console). O ideal é que o valor de `key` seja um valor único, como um ID vindo do banco de dados ou um `uuid`.
 
+## Hooks
+
 ### useEffect
 
 O useEffect é um dos hooks mais importantes do React. Ele é utilizado para lidar com efeitos colaterais ("side effects") dentro dos componentes.
