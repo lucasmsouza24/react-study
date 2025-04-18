@@ -736,3 +736,38 @@ export default function AppCss() {
     font-size: 36px;
 }
 ~~~
+
+### Sass (SCSS) no React
+
+Instalação do Sass:
+
+~~~bash
+npm install -D sass
+~~~
+
+Com isso você já pode usar arquivos `.scss` normalmente.
+
+📁 Estrutura típica:
+
+~~~css
+src/
+├── components/
+│   └── AppScss.jsx
+│   └── AppScss.scss
+~~~
+
+> No arquivo `.jsx` a importação do `.scss` é identica à importação do `.css`
+
+~~~scss
+// AppScss.scss
+$text-color: purple;
+
+.text {
+    color: $text-color;
+    font-size: 40px;
+    font-weight: bold;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+~~~
