@@ -1,7 +1,7 @@
-import ThemeProviderApp from "./topics/02-hooks/02-useContext/ThemeProviderApp"
+import PreviousValueTracker from "./topics/02-hooks/03-useRef/PreviousValueTracker"
 
 function App() {
-  return <ThemeProviderApp />
+  return <PreviousValueTracker />
 }
 
 export default App
