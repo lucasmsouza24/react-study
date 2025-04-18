@@ -704,3 +704,35 @@ A função getItens seria recriada em toda digitação, o que:
 - A função `getItens` só muda se search mudar.
 - O React sabe que não precisa reprocessar a lista se `search` não mudou.
 - O `ListaFiltrada` fica mais leve e otimizado.
+
+## Estilização
+
+### CSS puro
+
+📁 Estrutura típica:
+
+~~~css
+src/
+├── components/
+│   └── AppCss.jsx
+│   └── AppCss.css
+~~~
+
+No seu componente `.jsx`, você importa o arquivo `.css` correspondente:
+
+~~~jsx
+// AppCss.jsx
+import './AppCss.css';
+
+export default function AppCss() {
+    return <p className="text">Hello CSS!</p>;
+}
+~~~
+
+~~~css
+/* AppCss.css */
+.text {
+    color: blue;
+    font-size: 36px;
+}
+~~~
